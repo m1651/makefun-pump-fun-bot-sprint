@@ -288,7 +288,7 @@ class BotState:
                     "side": o["side"],
                     "client_id": cid,
                     "mint": o["mint"],
-                    "quote_lamports": amount,
+                    amount_key: o["amount"],
                     "max_slippage_bps": o["max_slippage_bps"],
                 }
             )
@@ -326,7 +326,7 @@ def _check_order(value, where):
     if not isinstance(value, dict):
         raise OrderError(f"{where}: expected an order dict, got {_describe(value)}")
     side = value.get("side")
-    if not isinstance(side, str) or side not in ("buy", "sell"):
+    if side not in ("buy", "sell"):
         raise OrderError(f'{where}: side must be "buy" or "sell", got {_describe(side)}')
     allowed = _BUY_KEYS if side == "buy" else _SELL_KEYS
     for k in value:
